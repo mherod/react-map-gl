@@ -93,3 +93,71 @@ test('Marker', async t => {
 
   t.end();
 });
+
+test('Marker - element property behavior', async t => {
+  const rootContainer = document.createElement('div');
+  const root = createRoot(rootContainer);
+  const markerRef = {current: null};
+  const mapRef = {current: null};
+
+  // Test 1: Marker without children should not create custom element
+  root.render(
+    <Map ref={mapRef}>
+      <Marker ref={markerRef} longitude={-122} latitude={38} />
+    </Map>
+  );
+
+  await waitForMapLoad(mapRef);
+  await sleep(1);
+
+  const marker = markerRef.current;
+  t.ok(marker, 'Marker is created');
+  
+  // The marker should use the default SVG element when no children are provided
+  const element = marker.getElement();
+  t.ok(element, 'Marker has an element');
+  t.ok(element.querySelector('svg'), 'Default marker uses SVG element');
+  t.notOk(element.querySelector('#custom-content'), 'No custom content present');
+
+  // Test 2: Marker with children should create custom div element
+  root.render(
+    <Map ref={mapRef}>
+      <Marker ref={markerRef} longitude={-122} latitude={38}>
+        <div id="custom-content">Custom Marker</div>
+      </Marker>
+    </Map>
+  );
+  await sleep(1);
+
+  const elementWithChildren = marker.getElement();
+  t.ok(elementWithChildren, 'Marker with children has an element');
+  t.ok(rootContainer.querySelector('#custom-content'), 'Custom content is rendered');
+  t.is(rootContainer.querySelector('#custom-content').textContent, 'Custom Marker', 'Custom content text is correct');
+  
+  // Test 3: Switching from children to no children
+  root.render(
+    <Map ref={mapRef}>
+      <Marker ref={markerRef} longitude={-122} latitude={38} />
+    </Map>
+  );
+  await sleep(1);
+
+  // Note: This creates a new marker instance, so we need to check the DOM
+  t.notOk(rootContainer.querySelector('#custom-content'), 'Custom content is removed when children are removed');
+
+  // Test 4: Switching from no children to children
+  root.render(
+    <Map ref={mapRef}>
+      <Marker ref={markerRef} longitude={-122} latitude={38}>
+        <div id="new-custom-content">New Custom Marker</div>
+      </Marker>
+    </Map>
+  );
+  await sleep(1);
+
+  t.ok(rootContainer.querySelector('#new-custom-content'), 'New custom content is rendered');
+  t.is(rootContainer.querySelector('#new-custom-content').textContent, 'New Custom Marker', 'New custom content text is correct');
+
+  root.unmount();
+  t.end();
+});

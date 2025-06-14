@@ -104,6 +104,7 @@ export type ViewStateChangeEvent = MapEventOf<
   | 'pitchend'
 > & {
   viewState: ViewState;
+  originalEvent?: MouseEvent | TouchEvent | WheelEvent;
 };
 
 export type PopupEvent = {
