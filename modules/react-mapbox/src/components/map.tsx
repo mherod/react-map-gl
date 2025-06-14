@@ -17,6 +17,10 @@ export type MapContextValue = {
 
 export const MapContext = React.createContext<MapContextValue>(null);
 
+const CHILD_CONTAINER_STYLE: CSSProperties = {
+  height: '100%'
+};
+
 type MapInitOptions = Omit<
   MapOptions,
   'style' | 'container' | 'bounds' | 'fitBoundsOptions' | 'center'
@@ -31,13 +35,13 @@ export type MapProps = MapInitOptions &
     id?: string;
     /** Map container CSS style */
     style?: CSSProperties;
-    children?: any;
+    children?: React.ReactNode;
   };
 
 function _Map(props: MapProps, ref: React.Ref<MapRef>) {
   const mountedMapsContext = useContext(MountedMapsContext);
   const [mapInstance, setMapInstance] = useState<Mapbox>(null);
-  const containerRef = useRef();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const {current: contextValue} = useRef<MapContextValue>({mapLib: null, map: null});
 
@@ -116,15 +120,11 @@ function _Map(props: MapProps, ref: React.Ref<MapRef>) {
     [props.style]
   );
 
-  const CHILD_CONTAINER_STYLE = {
-    height: '100%'
-  };
-
   return (
     <div id={props.id} ref={containerRef} style={style}>
       {mapInstance && (
         <MapContext.Provider value={contextValue}>
-          <div mapboxgl-children="" style={CHILD_CONTAINER_STYLE}>
+          <div data-mapboxgl-children="" style={CHILD_CONTAINER_STYLE}>
             {props.children}
           </div>
         </MapContext.Provider>

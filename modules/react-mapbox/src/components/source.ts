@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext, useEffect, useMemo, useState, useRef, cloneElement} from 'react';
+import {useContext, useEffect, useMemo, useState, useRef, cloneElement, isValidElement} from 'react';
 import {MapContext} from './map';
 import assert from '../utils/assert';
 import {deepEqual} from '../utils/deep-equal';
@@ -19,10 +19,10 @@ import type {
 
 export type SourceProps = (SourceSpecification | CanvasSourceSpecification) & {
   id?: string;
-  children?: any;
+  children?: React.ReactNode;
 };
 
-let sourceCounter = 0;
+let sourceIdCounter = 0;
 
 function createSource(map: MapInstance, id: string, props: SourceProps) {
   // @ts-ignore
@@ -83,7 +83,7 @@ export function Source(props: SourceProps) {
   const propsRef = useRef(props);
   const [, setStyleLoaded] = useState(0);
 
-  const id = useMemo(() => props.id || `jsx-source-${sourceCounter++}`, []);
+  const id = useMemo(() => props.id || `jsx-source-${sourceIdCounter++}`, []);
 
   useEffect(() => {
     if (map) {
@@ -129,10 +129,11 @@ export function Source(props: SourceProps) {
       React.Children.map(
         props.children,
         child =>
-          child &&
-          cloneElement(child, {
-            source: id
-          })
+          child && isValidElement(child)
+            ? cloneElement(child, {
+                source: id
+              } as any)
+            : child
       )) ||
     null
   );

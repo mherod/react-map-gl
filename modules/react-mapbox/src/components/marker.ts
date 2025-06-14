@@ -46,34 +46,34 @@ export const Marker = memo(
         element: hasChildren ? document.createElement('div') : undefined
       };
 
-      const mk = new mapLib.Marker(options);
-      mk.setLngLat([props.longitude, props.latitude]);
+      const markerInstance = new mapLib.Marker(options);
+      markerInstance.setLngLat([props.longitude, props.latitude]);
 
-      mk.getElement().addEventListener('click', (e: MouseEvent) => {
+      markerInstance.getElement().addEventListener('click', (e: MouseEvent) => {
         thisRef.current.props.onClick?.({
           type: 'click',
-          target: mk,
+          target: markerInstance,
           originalEvent: e
         });
       });
 
-      mk.on('dragstart', e => {
+      markerInstance.on('dragstart', e => {
         const evt = e as MarkerDragEvent;
-        evt.lngLat = marker.getLngLat();
+        evt.lngLat = markerInstance.getLngLat();
         thisRef.current.props.onDragStart?.(evt);
       });
-      mk.on('drag', e => {
+      markerInstance.on('drag', e => {
         const evt = e as MarkerDragEvent;
-        evt.lngLat = marker.getLngLat();
+        evt.lngLat = markerInstance.getLngLat();
         thisRef.current.props.onDrag?.(evt);
       });
-      mk.on('dragend', e => {
+      markerInstance.on('dragend', e => {
         const evt = e as MarkerDragEvent;
-        evt.lngLat = marker.getLngLat();
+        evt.lngLat = markerInstance.getLngLat();
         thisRef.current.props.onDragEnd?.(evt);
       });
 
-      return mk;
+      return markerInstance;
     }, []);
 
     useEffect(() => {

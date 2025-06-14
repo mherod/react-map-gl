@@ -39,7 +39,7 @@ function updateLayer(map: MapInstance, id: string, props: LayerProps, prevProps:
       }
     }
     for (const key in prevLayout) {
-      if (!layout.hasOwnProperty(key)) {
+      if (!(key in layout)) {
         map.setLayoutProperty(id, key as any, undefined);
       }
     }
@@ -52,7 +52,7 @@ function updateLayer(map: MapInstance, id: string, props: LayerProps, prevProps:
       }
     }
     for (const key in prevPaint) {
-      if (!paint.hasOwnProperty(key)) {
+      if (!(key in paint)) {
         map.setPaintProperty(id, key as any, undefined);
       }
     }
@@ -80,14 +80,14 @@ function createLayer(map: MapInstance, id: string, props: LayerProps) {
 
 /* eslint-enable complexity, max-statements */
 
-let layerCounter = 0;
+let layerIdCounter = 0;
 
 export function Layer(props: LayerProps) {
   const map = useContext(MapContext).map.getMap();
   const propsRef = useRef(props);
   const [, setStyleLoaded] = useState(0);
 
-  const id = useMemo(() => props.id || `jsx-layer-${layerCounter++}`, []);
+  const id = useMemo(() => props.id || `jsx-layer-${layerIdCounter++}`, []);
 
   useEffect(() => {
     if (map) {
