@@ -85,10 +85,12 @@ export const Popup = memo(
         popup.setLngLat([props.longitude, props.latitude]);
       }
       if (props.offset && !deepEqual(oldProps.offset, props.offset)) {
-        popup.options.anchor = props.anchor;
         popup.setOffset(props.offset);
       }
-      if (oldProps.anchor !== props.anchor || oldProps.maxWidth !== props.maxWidth) {
+      if (oldProps.anchor !== props.anchor) {
+        popup.options.anchor = props.anchor;
+      }
+      if (oldProps.maxWidth !== props.maxWidth) {
         popup.setMaxWidth(props.maxWidth);
       }
       const classNameDiff = compareClassNames(oldProps.className, props.className);
