@@ -403,16 +403,21 @@ export default class Maplibre {
     const tr = map.transform;
     const isMoving = map.isMoving();
 
-    // Avoid manipulating the real transform when interaction/animation is ongoing
-    // as it would interfere with Mapbox's handlers
-    if (!isMoving) {
-      const changes = applyViewStateToTransform(tr, nextProps);
-      if (Object.keys(changes).length > 0) {
-        this._internalUpdate = true;
+    const changes = applyViewStateToTransform(tr, nextProps);
+    if (Object.keys(changes).length > 0) {
+      this._internalUpdate = true;
+      
+      if (!isMoving) {
+        // If the map is not moving, use jumpTo for immediate application
         map.jumpTo(changes);
-        this._internalUpdate = false;
-        return true;
+      } else {
+        // If the map is moving, use easeTo with very short duration to avoid jumps
+        // This allows controlled viewState to stay in sync during continuous interactions
+        map.easeTo({...changes, duration: 0});
       }
+      
+      this._internalUpdate = false;
+      return true;
     }
 
     return false;
