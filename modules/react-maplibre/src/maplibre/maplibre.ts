@@ -76,6 +76,13 @@ export type MaplibreProps = Partial<ViewState> &
     interactiveLayerIds?: string[];
     /** CSS cursor */
     cursor?: string;
+
+    /** Font-family for locally overriding generation of Chinese, Japanese, and Korean characters.
+     * For these characters, font settings from the map's style will be ignored, except for font-weight keywords.
+     * Set to `false` to enable font settings from the map's style for these glyph ranges.
+     * @default 'sans-serif'
+     */
+    localIdeographFontFamily?: string | false;
   };
 
 const DEFAULT_STYLE = {version: 8, sources: {}, layers: []} as StyleSpecification;
@@ -262,9 +269,11 @@ export default class Maplibre {
   private _initialize(container: HTMLDivElement) {
     const {props} = this;
     const {mapStyle = DEFAULT_STYLE} = props;
+    // Extract react-map-gl specific properties from initialViewState
+    const {bounds, fitBoundsOptions, ...initialViewStateForMap} = props.initialViewState || {};
     const mapOptions = {
       ...props,
-      ...props.initialViewState,
+      ...initialViewStateForMap,
       container,
       style: normalizeStyle(mapStyle)
     };
@@ -297,6 +306,11 @@ export default class Maplibre {
     }
     if (props.cursor) {
       map.getCanvas().style.cursor = props.cursor;
+    }
+    
+    // Handle bounds if provided
+    if (bounds) {
+      map.fitBounds(bounds, {...fitBoundsOptions, duration: 0});
     }
 
     // add listeners
