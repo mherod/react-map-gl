@@ -467,10 +467,10 @@ export default class Maplibre {
         currProps.sky = sky;
         map.setSky(sky);
       }
-      if (terrain !== undefined && !deepEqual(terrain, currProps.terrain)) {
+      if (!deepEqual(terrain, currProps.terrain)) {
         if (!terrain || map.getSource(terrain.source)) {
           currProps.terrain = terrain;
-          map.setTerrain(terrain);
+          map.setTerrain(terrain || null);
         }
       }
     }
