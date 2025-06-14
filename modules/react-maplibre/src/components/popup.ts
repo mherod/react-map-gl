@@ -48,7 +48,16 @@ export const Popup = memo(
       const onClose = e => {
         thisRef.current.props.onClose?.(e as PopupEvent);
       };
+      const onResize = () => {
+        // Force popup to recalculate its position after map resize
+        if (popup.isOpen()) {
+          const currentLngLat = popup.getLngLat();
+          popup.setLngLat(currentLngLat);
+        }
+      };
+      
       popup.on('close', onClose);
+      map.getMap().on('resize', onResize);
       popup.setDOMContent(container).addTo(map.getMap());
 
       return () => {
@@ -57,6 +66,7 @@ export const Popup = memo(
         // When using React strict mode, the component is mounted twice.
         // Firing the onClose callback here would be a false signal to remove the component.
         popup.off('close', onClose);
+        map.getMap().off('resize', onResize);
         if (popup.isOpen()) {
           popup.remove();
         }
