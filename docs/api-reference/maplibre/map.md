@@ -51,6 +51,12 @@ The current cursor [type](https://developer.mozilla.org/en-US/docs/Web/CSS/curso
 
 Light properties of the style. Must conform to the [Light Style Specification](https://maplibre.org/maplibre-style-spec/light/).
 
+#### `localIdeographFontFamily`: string | false {#localideographfontfamily}
+
+Default: `'sans-serif'`
+
+Font-family for locally overriding generation of Chinese, Japanese, and Korean characters. For these characters, font settings from the map's style will be ignored, except for font-weight keywords. Set to `false` to enable font settings from the map's style for these glyph ranges.
+
 #### `mapStyle`: [MapStyle](./types.md#mapstyle) | string | Immutable {#mapstyle}
 
 Default: (empty style)
@@ -79,10 +85,10 @@ Default: `true`
 
 Enable diffing when `mapStyle` changes. If `false`, force a 'full' update, removing the current style and building the given one instead of attempting a diff-based update.
 
-#### `terrain`: [Terrain](./types.md#terrain)|null {#terrain}
+#### `terrain`: [Terrain](./types.md#terrain) | null | undefined {#terrain}
 
 Terrain property of the style. Must conform to the [Terrain Style Specification](https://maplibre.org/maplibre-style-spec/terrain/).
-If `null` is provided, removes terrain from the map.
+If `null` or `undefined` is provided, removes terrain from the map.
 
 
 ### Camera options

@@ -4,7 +4,7 @@ You may find complete project setups in [get-started examples](https://github.co
 
 ## Installation
 
-Using `react-map-gl` requires `node >= 12` and `react >= 16.3`.
+Using `react-map-gl` requires `node >= 18` and `react >= 18.0`.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

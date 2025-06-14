@@ -61,6 +61,12 @@ If `undefined` is provided, removes the fog from the map.
 
 Light properties of the style. Must conform to the [Light Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#light).
 
+#### `localIdeographFontFamily`: string | false {#localideographfontfamily}
+
+Default: `'sans-serif'`
+
+Font-family for locally overriding generation of Chinese, Japanese, and Korean characters. For these characters, font settings from the map's style will be ignored, except for font-weight keywords. Set to `false` to enable font settings from the map's style for these glyph ranges.
+
 #### `mapStyle`: [MapStyle](./types.md#mapstyle) | string | Immutable {#mapstyle}
 
 Default: (empty style)
@@ -85,10 +91,10 @@ Default: `true`
 
 Enable diffing when `mapStyle` changes. If `false`, force a 'full' update, removing the current style and building the given one instead of attempting a diff-based update.
 
-#### `terrain`: [Terrain](./types.md#terrain) {#terrain}
+#### `terrain`: [Terrain](./types.md#terrain) | null | undefined {#terrain}
 
 Terrain property of the style. Must conform to the [Terrain Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/terrain/).
-If `undefined` is provided, removes terrain from the map.
+If `null` or `undefined` is provided, removes terrain from the map.
 
 ### Camera options
 
@@ -473,8 +479,10 @@ function App() {
 Or to load a pre-bundled version of the library:
 
 ```html title="index.html"
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/v<YOUR_MAPBOX_VERSION>/mapbox-gl.js"></script>
 ```
+
+Find out your mapbox version by running `yarn list mapbox-gl` or `npm ls mapbox-gl`.
 
 ```tsx title="app.tsx"
 import * as React from 'react';
