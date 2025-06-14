@@ -55,7 +55,7 @@ export const Popup = memo(
           popup.setLngLat(currentLngLat);
         }
       };
-      
+
       popup.on('close', onClose);
       map.getMap().on('resize', onResize);
       popup.setDOMContent(container).addTo(map.getMap());

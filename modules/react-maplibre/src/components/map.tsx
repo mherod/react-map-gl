@@ -125,7 +125,7 @@ function _Map(props: MapProps, ref: React.Ref<MapRef>) {
     <div id={props.id} ref={containerRef} style={style}>
       {mapInstance && (
         <MapContext.Provider value={contextValue}>
-          <div mapboxgl-children="" style={CHILD_CONTAINER_STYLE}>
+          <div data-mapboxgl-children="" style={CHILD_CONTAINER_STYLE}>
             {props.children}
           </div>
         </MapContext.Provider>

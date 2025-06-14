@@ -307,7 +307,7 @@ export default class Maplibre {
     if (props.cursor) {
       map.getCanvas().style.cursor = props.cursor;
     }
-    
+
     // Handle bounds if provided
     if (bounds) {
       map.fitBounds(bounds, {...fitBoundsOptions, duration: 0});
@@ -346,7 +346,7 @@ export default class Maplibre {
   recycle() {
     // Clean up unnecessary elements before storing for reuse.
     const container = this.map.getContainer();
-    const children = container.querySelector('[mapboxgl-children]');
+    const children = container.querySelector('[data-mapboxgl-children]');
     children?.remove();
 
     Maplibre.savedMaps.push(this);
@@ -406,7 +406,7 @@ export default class Maplibre {
     const changes = applyViewStateToTransform(tr, nextProps);
     if (Object.keys(changes).length > 0) {
       this._internalUpdate = true;
-      
+
       if (!isMoving) {
         // If the map is not moving, use jumpTo for immediate application
         map.jumpTo(changes);
@@ -415,7 +415,7 @@ export default class Maplibre {
         // This allows controlled viewState to stay in sync during continuous interactions
         map.easeTo({...changes, duration: 0});
       }
-      
+
       this._internalUpdate = false;
       return true;
     }

@@ -367,7 +367,7 @@ export default class Mapbox {
   recycle() {
     // Clean up unnecessary elements before storing for reuse.
     const container = this.map.getContainer();
-    const children = container.querySelector('[mapboxgl-children]');
+    const children = container.querySelector('[data-mapboxgl-children]');
     children?.remove();
 
     Mapbox.savedMaps.push(this);
