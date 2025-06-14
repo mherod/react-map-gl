@@ -252,6 +252,9 @@ export default class Mapbox {
     // @ts-ignore
     map._container = container;
 
+    // Step 3: clear stale proxy transform state from previous usage
+    that._proxyTransform.$proposedTransform = null;
+
     // Step 4: apply new props
     that.setProps({...props, styleDiffing: false});
     map.resize();
