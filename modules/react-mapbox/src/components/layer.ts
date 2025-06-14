@@ -112,7 +112,7 @@ export function Layer(props: LayerProps) {
     try {
       updateLayer(map, id, props, propsRef.current);
     } catch (error) {
-      console.warn(error); // eslint-disable-line
+      // Error updating layer
     }
   } else {
     createLayer(map, id, props);

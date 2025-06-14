@@ -1,5 +1,13 @@
 import * as React from 'react';
-import {useContext, useEffect, useMemo, useState, useRef, cloneElement, isValidElement} from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  cloneElement,
+  isValidElement
+} from 'react';
 import {MapContext} from './map';
 import assert from '../utils/assert';
 import {deepEqual} from '../utils/deep-equal';
@@ -72,8 +80,7 @@ function updateSource(source: AnySourceImplementation, props: SourceProps, prevP
   } else if ('setTiles' in source && changedKey === 'tiles') {
     source.setTiles((props as VectorSourceSpecification).tiles);
   } else {
-    // eslint-disable-next-line
-    console.warn(`Unable to update <Source> prop: ${changedKey}`);
+    // Unable to update source property
   }
 }
 /* eslint-enable complexity */
@@ -126,14 +133,12 @@ export function Source(props: SourceProps) {
 
   return (
     (source &&
-      React.Children.map(
-        props.children,
-        child =>
-          child && isValidElement(child)
-            ? cloneElement(child, {
-                source: id
-              } as any)
-            : child
+      React.Children.map(props.children, child =>
+        child && isValidElement(child)
+          ? cloneElement(child, {
+              source: id
+            } as any)
+          : child
       )) ||
     null
   );

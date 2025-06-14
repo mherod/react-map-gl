@@ -115,7 +115,7 @@ test('Marker - element property behavior', async t => {
 
   const marker = markerRef.current;
   t.ok(marker, 'Marker is created');
-  
+
   // The marker should use the default SVG element when no children are provided
   const element = marker.getElement();
   t.ok(element, 'Marker has an element');
@@ -135,8 +135,12 @@ test('Marker - element property behavior', async t => {
   const elementWithChildren = marker.getElement();
   t.ok(elementWithChildren, 'Marker with children has an element');
   t.ok(rootContainer.querySelector('#custom-content'), 'Custom content is rendered');
-  t.is(rootContainer.querySelector('#custom-content').textContent, 'Custom Marker', 'Custom content text is correct');
-  
+  t.is(
+    rootContainer.querySelector('#custom-content').textContent,
+    'Custom Marker',
+    'Custom content text is correct'
+  );
+
   // Test 3: Switching from children to no children
   root.render(
     <Map ref={mapRef} mapLib={import('mapbox-gl-v3')} mapboxAccessToken={MapboxAccessToken}>
@@ -146,7 +150,10 @@ test('Marker - element property behavior', async t => {
   await sleep(1);
 
   // Note: This creates a new marker instance, so we need to check the DOM
-  t.notOk(rootContainer.querySelector('#custom-content'), 'Custom content is removed when children are removed');
+  t.notOk(
+    rootContainer.querySelector('#custom-content'),
+    'Custom content is removed when children are removed'
+  );
 
   // Test 4: Switching from no children to children
   root.render(
@@ -159,7 +166,11 @@ test('Marker - element property behavior', async t => {
   await sleep(1);
 
   t.ok(rootContainer.querySelector('#new-custom-content'), 'New custom content is rendered');
-  t.is(rootContainer.querySelector('#new-custom-content').textContent, 'New Custom Marker', 'New custom content text is correct');
+  t.is(
+    rootContainer.querySelector('#new-custom-content').textContent,
+    'New Custom Marker',
+    'New custom content text is correct'
+  );
 
   root.unmount();
   t.end();

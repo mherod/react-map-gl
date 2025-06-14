@@ -25,7 +25,6 @@ import type {
   MapCallbacks,
   ViewStateChangeEvent,
   MapEvent,
-  ErrorEvent,
   MapMouseEvent
 } from '../types/events';
 
@@ -380,7 +379,7 @@ export default class Mapbox {
   recycle() {
     // Clean up unnecessary elements before storing for reuse.
     const container = this.map.getContainer();
-    const children = container.querySelector('[mapboxgl-children]');
+    const children = container.querySelector('[data-mapboxgl-children]');
     children?.remove();
 
     Mapbox.savedMaps.push(this);
@@ -560,7 +559,7 @@ export default class Mapbox {
     if (cb) {
       cb(e);
     } else if (e.type === 'error') {
-      console.error((e as ErrorEvent).error); // eslint-disable-line
+      // Unhandled map error event
     }
   };
 
